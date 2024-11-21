@@ -349,7 +349,15 @@ def _tensor_matrix_multiply(
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
 
     # TODO: Implement for Task 3.2.
-    raise NotImplementedError("Need to implement for Task 3.2")
+    for n in prange(out_shape[0]):
+        for i in range(out_shape[1]):
+            for j in range(out_shape[2]):
+                out_idx = n * out_strides[0] + i * out_strides[1] + j * out_strides[2]
+                out[out_idx] = 0.0
+                for k in range(a_shape[-1]): # Compute the dot product
+                    a_idx = n * a_batch_stride + i * a_strides[1] + k * a_strides[2]
+                    b_idx = n * b_batch_stride + k * b_strides[1] + j * b_strides[2]
+                    out[out_idx] += a_storage[a_idx] * b_storage[b_idx]
 
 
 tensor_matrix_multiply = njit(_tensor_matrix_multiply, parallel=True)
