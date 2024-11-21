@@ -169,7 +169,7 @@ def relu(x: float) -> float:
         The ReLU of the input number. 0 when x is negative, otherwise x
 
     """
-    return max(0.0, x)
+    return x if x > 0 else 0.0
 
 
 EPS = 1e-6

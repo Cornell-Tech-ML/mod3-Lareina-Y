@@ -301,7 +301,7 @@ class Tensor:
     @property
     def dims(self) -> int:
         """Returns the number of dimensions of the tensor."""
-        return len(self.shape)
+        return self._tensor.dims
 
     def __add__(self, other: TensorLike) -> Tensor:
         return Add.apply(self, self._ensure_tensor(other))
@@ -325,21 +325,21 @@ class Tensor:
         return Neg.apply(self)
 
     def __radd__(self, other: TensorLike) -> Tensor:
-        return Add.apply(self, self._ensure_tensor(other))
+        return self + other
 
     def __rmul__(self, other: TensorLike) -> Tensor:
-        return self * self._ensure_tensor(other)
+        return self * other
 
     def all(self, dim: Optional[int] = None) -> Tensor:
         """Apply the all"""
         if dim is None:
-            return All.apply(self.contiguous().view(self.size), self._ensure_tensor(0))
+            return All.apply(self.view(self.size), self._ensure_tensor(0))
         else:
             return All.apply(self, self._ensure_tensor(dim))
 
-    def is_close(self, other: TensorLike) -> Tensor:
+    def is_close(self, other: Tensor) -> Tensor:
         """Apply the IsClose"""
-        return IsClose.apply(self, self._ensure_tensor(other))
+        return IsClose.apply(self, other)
 
     def sigmoid(self) -> Tensor:
         """Apply the signoid"""
@@ -366,16 +366,18 @@ class Tensor:
 
     def mean(self, dim: Optional[int] = None) -> Tensor:
         """Apply the mean"""
-        sum_tensor = self.sum(dim)
-        return sum_tensor / sum_tensor.size
+        if dim is not None:
+            return self.sum(dim) / self.shape[dim]
+        else: 
+            return self.sum() / self.size
 
     def permute(self, *order: int) -> Tensor:
         """Apply the permute"""
-        return Permute.apply(self, tensor(order))
+        return Permute.apply(self, tensor(list(order)))
 
     def view(self, *shape: int) -> Tensor:
         """Apply the view"""
-        return View.apply(self, tensor(shape))
+        return View.apply(self, tensor(list(shape)))
 
     def zero_grad_(self) -> None:
         """Set .grad to None"""
