@@ -368,7 +368,7 @@ class Tensor:
         """Apply the mean"""
         if dim is not None:
             return self.sum(dim) / self.shape[dim]
-        else: 
+        else:
             return self.sum() / self.size
 
     def permute(self, *order: int) -> Tensor:

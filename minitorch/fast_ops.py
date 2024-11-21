@@ -170,14 +170,13 @@ def tensor_map(
     ) -> None:
         # TODO: Implement for Task 3.1.
 
-        stride_aligned = (
-            np.array_equal(out_strides, in_strides) and 
-            np.array_equal(out_shape, in_shape)
+        stride_aligned = np.array_equal(out_strides, in_strides) and np.array_equal(
+            out_shape, in_shape
         )
-        
-        if stride_aligned: # When stride-aligned, avoid indexing 
+
+        if stride_aligned:  # When stride-aligned, avoid indexing
             for i in prange(len(out)):
-                out[i] = fn(in_storage[i])    
+                out[i] = fn(in_storage[i])
         else:
             for i in prange(len(out)):
                 out_index: Index = np.zeros(MAX_DIMS, dtype=np.int32)
@@ -233,10 +232,10 @@ def tensor_zip(
             np.array_equal(out_strides, a_strides)
             and np.array_equal(out_strides, b_strides)
             and np.array_equal(out_shape, a_shape)
-            and np.array_equal(out_shape, b_shape) 
+            and np.array_equal(out_shape, b_shape)
         )
 
-        if stride_aligned: # When stride-aligned, avoid indexing 
+        if stride_aligned:  # When stride-aligned, avoid indexing
             for i in prange(len(out)):
                 out[i] = fn(a_storage[i], b_storage[i])
         else:
@@ -252,7 +251,7 @@ def tensor_zip(
                 a_pos = index_to_position(a_index, a_strides)
                 b_pos = index_to_position(b_index, b_strides)
                 out_pos = index_to_position(out_index, out_strides)
-                
+
                 out[out_pos] = fn(a_storage[a_pos], b_storage[b_pos])
 
     return njit(_zip, parallel=True)  # type: ignore
@@ -354,7 +353,7 @@ def _tensor_matrix_multiply(
             for j in range(out_shape[2]):
                 out_idx = n * out_strides[0] + i * out_strides[1] + j * out_strides[2]
                 out[out_idx] = 0.0
-                for k in range(a_shape[-1]): # Compute the dot product
+                for k in range(a_shape[-1]):  # Compute the dot product
                     a_idx = n * a_batch_stride + i * a_strides[1] + k * a_strides[2]
                     b_idx = n * b_batch_stride + k * b_strides[1] + j * b_strides[2]
                     out[out_idx] += a_storage[a_idx] * b_storage[b_idx]
