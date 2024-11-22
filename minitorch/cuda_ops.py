@@ -98,7 +98,8 @@ class CudaOps(TensorOps):
             out_shape[dim] = (a.shape[dim] - 1) // 1024 + 1
             out_a = a.zeros(tuple(out_shape))
 
-            threadsperblock = 1024
+            # threadsperblock = 1024
+            threadsperblock = 512
             blockspergrid = out_a.size
             f[blockspergrid, threadsperblock](  # type: ignore
                 *out_a.tuple(), out_a.size, *a.tuple(), dim, start
@@ -329,7 +330,8 @@ def tensor_reduce(
         reduce_dim: int,
         reduce_value: float,
     ) -> None:
-        BLOCK_DIM = 1024
+        # BLOCK_DIM = 1024
+        BLOCK_DIM = 512
         cache = cuda.shared.array(BLOCK_DIM, numba.float64)
         out_index = cuda.local.array(MAX_DIMS, numba.int32)
         out_pos = cuda.blockIdx.x
@@ -507,6 +509,7 @@ def _tensor_matrix_multiply(
         else:
             b_shared[pi, pj] = 0.0
 
+        # Ensure all threads loaded data
         cuda.syncthreads()
         
         # c) Compute the dot produce for position c[i, j]
@@ -514,6 +517,7 @@ def _tensor_matrix_multiply(
         for k in range(BLOCK_DIM):
             c_value += a_shared[pi, k] * b_shared[k, pj]
 
+        # Avoid race conditions in shared memory
         cuda.syncthreads()
 
     # Write result to global memory
