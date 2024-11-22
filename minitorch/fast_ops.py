@@ -169,8 +169,6 @@ def tensor_map(
         in_shape: Shape,
         in_strides: Strides,
     ) -> None:
-        # TODO: Implement for Task 3.1.
-
         stride_aligned = np.array_equal(out_strides, in_strides) and np.array_equal(
             out_shape, in_shape
         )
@@ -227,8 +225,6 @@ def tensor_zip(
         b_shape: Shape,
         b_strides: Strides,
     ) -> None:
-        # TODO: Implement for Task 3.1.
-
         stride_aligned = (
             np.array_equal(out_strides, a_strides)
             and np.array_equal(out_strides, b_strides)
@@ -288,7 +284,6 @@ def tensor_reduce(
         a_strides: Strides,
         reduce_dim: int,
     ) -> None:
-        # TODO: Implement for Task 3.1.
         for i in prange(len(out)):
             out_index: Index = np.zeros(MAX_DIMS, dtype=np.int32)
             to_index(i, out_shape, out_index)
@@ -348,12 +343,11 @@ def _tensor_matrix_multiply(
     a_batch_stride = a_strides[0] if a_shape[0] > 1 else 0
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
 
-    # TODO: Implement for Task 3.2.
     for n in prange(out_shape[0]):
-        for i in range(out_shape[1]):
-            for j in range(out_shape[2]):
+        for i in prange(out_shape[1]):
+            for j in prange(out_shape[2]):
                 out_idx = n * out_strides[0] + i * out_strides[1] + j * out_strides[2]
-                out[out_idx] = 0.0
+                out[out_idx] = 0
                 for k in range(a_shape[-1]):  # Compute the dot product
                     a_idx = n * a_batch_stride + i * a_strides[1] + k * a_strides[2]
                     b_idx = n * b_batch_stride + k * b_strides[1] + j * b_strides[2]
