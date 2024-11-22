@@ -347,7 +347,7 @@ def _tensor_matrix_multiply(
         for i in prange(out_shape[1]):
             for j in prange(out_shape[2]):
                 out_idx = n * out_strides[0] + i * out_strides[1] + j * out_strides[2]
-                out[out_idx] = 0
+                out[out_idx] = 0.0
                 for k in range(a_shape[-1]):  # Compute the dot product
                     a_idx = n * a_batch_stride + i * a_strides[1] + k * a_strides[2]
                     b_idx = n * b_batch_stride + k * b_strides[1] + j * b_strides[2]
