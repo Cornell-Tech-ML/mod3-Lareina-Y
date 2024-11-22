@@ -8,8 +8,7 @@ FastTensorBackend = minitorch.TensorBackend(minitorch.FastOps)
 if numba.cuda.is_available():
     GPUBackend = minitorch.TensorBackend(minitorch.CudaOps)
 
-start_time = time.time()
-def default_log_fn(epoch, total_loss, correct, losses):
+def default_log_fn(epoch, total_loss, correct, losses, start_time):
     time_elapsed = time.time() - start_time
     time_per_epoch = time_elapsed / (epoch + 1)
     print("Epoch", epoch, "| loss ", total_loss, "| correct", correct, "| Time per epoch:", round(time_per_epoch, 2), "sec")
@@ -66,6 +65,7 @@ class FastTrain:
         BATCH = 10
         losses = []
 
+        start_time = time.time()
         for epoch in range(max_epochs+1):
             total_loss = 0.0
             c = list(zip(data.X, data.y))
@@ -96,7 +96,7 @@ class FastTrain:
                 out = self.model.forward(X).view(y.shape[0])
                 y2 = minitorch.tensor(data.y)
                 correct = int(((out.detach() > 0.5) == y2).sum()[0])
-                log_fn(epoch, total_loss, correct, losses)
+                log_fn(epoch, total_loss, correct, losses, start_time)
 
 
 if __name__ == "__main__":
