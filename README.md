@@ -763,9 +763,59 @@ Epoch 500 | loss  0.044119371220814885 | correct 50 | Time per epoch: 0.14 sec
 ```bash
 !cd $DIR; PYTHONPATH=/content/$DIR python3.12 project/run_fast_tensor.py --BACKEND gpu --HIDDEN 200 --DATASET simple --RATE 0.05
 ```
-Time per epoch:
+Time per epoch: 1.37 sec
 <pre style="max-height: 200px; overflow-y: scroll;">
-
+Epoch 0 | loss 6.942341214687812 | correct 28 | Time per epoch: 5.62 sec
+Epoch 10 | loss 6.503921537912465 | correct 32 | Time per epoch: 1.72 sec
+Epoch 20 | loss 4.876721093452178 | correct 40 | Time per epoch: 1.58 sec
+Epoch 30 | loss 3.821544786923761 | correct 47 | Time per epoch: 1.53 sec
+Epoch 40 | loss 2.124671267890413 | correct 50 | Time per epoch: 1.50 sec
+Epoch 50 | loss 1.489324679235214 | correct 50 | Time per epoch: 1.49 sec
+Epoch 60 | loss 0.9252670913458271 | correct 50 | Time per epoch: 1.47 sec
+Epoch 70 | loss 0.5124387094783728 | correct 50 | Time per epoch: 1.46 sec
+Epoch 80 | loss 0.2358135672910933 | correct 50 | Time per epoch: 1.45 sec
+Epoch 90 | loss 0.0994871290340521 | correct 50 | Time per epoch: 1.45 sec
+Epoch 100 | loss 0.03782245112348755 | correct 50 | Time per epoch: 1.44 sec
+Epoch 110 | loss 0.026112932157415896 | correct 50 | Time per epoch: 1.43 sec
+Epoch 120 | loss 0.014518604812764389 | correct 50 | Time per epoch: 1.43 sec
+Epoch 130 | loss 0.029745612454763845 | correct 50 | Time per epoch: 1.42 sec
+Epoch 140 | loss 0.011377054278903212 | correct 50 | Time per epoch: 1.42 sec
+Epoch 150 | loss 0.004679387651724312 | correct 50 | Time per epoch: 1.42 sec
+Epoch 160 | loss 0.005145603849614592 | correct 50 | Time per epoch: 1.41 sec
+Epoch 170 | loss 0.0031978424512371345 | correct 50 | Time per epoch: 1.41 sec
+Epoch 180 | loss 0.002541685238953712 | correct 50 | Time per epoch: 1.41 sec
+Epoch 190 | loss 0.0029131743195723764 | correct 50 | Time per epoch: 1.40 sec
+Epoch 200 | loss 0.001843294891571832 | correct 50 | Time per epoch: 1.40 sec
+Epoch 210 | loss 0.0016451324752189372 | correct 50 | Time per epoch: 1.40 sec
+Epoch 220 | loss 0.0015320657017284976 | correct 50 | Time per epoch: 1.40 sec
+Epoch 230 | loss 0.001217504785671523 | correct 50 | Time per epoch: 1.39 sec
+Epoch 240 | loss 0.0010387195731042184 | correct 50 | Time per epoch: 1.39 sec
+Epoch 250 | loss 0.000891047184537123 | correct 50 | Time per epoch: 1.39 sec
+Epoch 260 | loss 0.0007782652374912923 | correct 50 | Time per epoch: 1.39 sec
+Epoch 270 | loss 0.000658139521374672 | correct 50 | Time per epoch: 1.39 sec
+Epoch 280 | loss 0.0005978456523412975 | correct 50 | Time per epoch: 1.39 sec
+Epoch 290 | loss 0.0005464289234817253 | correct 50 | Time per epoch: 1.39 sec
+Epoch 300 | loss 0.00047361245761583234 | correct 50 | Time per epoch: 1.38 sec
+Epoch 310 | loss 0.0004326542389172411 | correct 50 | Time per epoch: 1.38 sec
+Epoch 320 | loss 0.000405642339761823 | correct 50 | Time per epoch: 1.38 sec
+Epoch 330 | loss 0.0003783419678523642 | correct 50 | Time per epoch: 1.38 sec
+Epoch 340 | loss 0.00034721594305648947 | correct 50 | Time per epoch: 1.38 sec
+Epoch 350 | loss 0.00032864127906543785 | correct 50 | Time per epoch: 1.38 sec
+Epoch 360 | loss 0.000311298752486235 | correct 50 | Time per epoch: 1.38 sec
+Epoch 370 | loss 0.0002979286587819238 | correct 50 | Time per epoch: 1.38 sec
+Epoch 380 | loss 0.0002815327640937257 | correct 50 | Time per epoch: 1.38 sec
+Epoch 390 | loss 0.00027191572685328136 | correct 50 | Time per epoch: 1.38 sec
+Epoch 400 | loss 0.00026081213678561434 | correct 50 | Time per epoch: 1.37 sec
+Epoch 410 | loss 0.0002521576938243894 | correct 50 | Time per epoch: 1.37 sec
+Epoch 420 | loss 0.00024465230190413863 | correct 50 | Time per epoch: 1.37 sec
+Epoch 430 | loss 0.00023823496254934785 | correct 50 | Time per epoch: 1.37 sec
+Epoch 440 | loss 0.0002318547123987123 | correct 50 | Time per epoch: 1.37 sec
+Epoch 450 | loss 0.0002261571295413621 | correct 50 | Time per epoch: 1.37 sec
+Epoch 460 | loss 0.0002211198748136478 | correct 50 | Time per epoch: 1.37 sec
+Epoch 470 | loss 0.0002171030245723596 | correct 50 | Time per epoch: 1.37 sec
+Epoch 480 | loss 0.00021305572426398514 | correct 50 | Time per epoch: 1.37 sec
+Epoch 490 | loss 0.00020996543716243156 | correct 50 | Time per epoch: 1.37 sec
+Epoch 500 | loss 0.0002068763279216824 | correct 50 | Time per epoch: 1.37 sec
 </pre>
 
 
