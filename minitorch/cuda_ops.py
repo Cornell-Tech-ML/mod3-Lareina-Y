@@ -98,8 +98,7 @@ class CudaOps(TensorOps):
             out_shape[dim] = (a.shape[dim] - 1) // 1024 + 1
             out_a = a.zeros(tuple(out_shape))
 
-            # threadsperblock = 1024
-            threadsperblock = 512
+            threadsperblock = 1024
             blockspergrid = out_a.size
             f[blockspergrid, threadsperblock](  # type: ignore
                 *out_a.tuple(), out_a.size, *a.tuple(), dim, start
@@ -330,8 +329,7 @@ def tensor_reduce(
         reduce_dim: int,
         reduce_value: float,
     ) -> None:
-        # BLOCK_DIM = 1024
-        BLOCK_DIM = 512
+        BLOCK_DIM = 1024
         cache = cuda.shared.array(BLOCK_DIM, numba.float64)
         out_index = cuda.local.array(MAX_DIMS, numba.int32)
         out_pos = cuda.blockIdx.x
@@ -493,6 +491,7 @@ def _tensor_matrix_multiply(
 
     # TODO: Implement for Task 3.4.
     
+    sum = 0.0
     # Move across shared dimension by block dim.
     for m in range((a_shape[-1] + BLOCK_DIM - 1) // BLOCK_DIM):
         # a) Copy into shared memory for a matrix.
@@ -513,9 +512,8 @@ def _tensor_matrix_multiply(
         cuda.syncthreads()
         
         # c) Compute the dot produce for position c[i, j]
-        c_value = 0.0
         for k in range(BLOCK_DIM):
-            c_value += a_shared[pi, k] * b_shared[k, pj]
+            sum += a_shared[pi, k] * b_shared[k, pj]
 
         # Avoid race conditions in shared memory
         cuda.syncthreads()
@@ -523,7 +521,7 @@ def _tensor_matrix_multiply(
     # Write result to global memory
     if i < out_shape[-2] and j < out_shape[-1]:
         out_pos = batch * out_strides[0] + i * out_strides[-2] + j * out_strides[-1]
-        out[out_pos] = c_value
+        out[out_pos] = sum
 
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)
