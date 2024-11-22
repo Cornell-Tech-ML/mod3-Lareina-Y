@@ -489,13 +489,37 @@ def _tensor_matrix_multiply(
     pi = cuda.threadIdx.x
     pj = cuda.threadIdx.y
 
-    # Code Plan:
-    # 1) Move across shared dimension by block dim.
-    #    a) Copy into shared memory for a matrix.
-    #    b) Copy into shared memory for b matrix
-    #    c) Compute the dot produce for position c[i, j]
     # TODO: Implement for Task 3.4.
-    raise NotImplementedError("Need to implement for Task 3.4")
+    
+    # Move across shared dimension by block dim.
+    for m in range((a_shape[-1] + BLOCK_DIM - 1) // BLOCK_DIM):
+        # a) Copy into shared memory for a matrix.
+        if i < a_shape[-2] and (m * BLOCK_DIM + pj) < a_shape[-1]:
+            a_pos = batch * a_batch_stride + i * a_strides[-2] + (m * BLOCK_DIM + pj) * a_strides[-1]
+            a_shared[pi, pj] = a_storage[a_pos]
+        else:
+            a_shared[pi, pj] = 0.0
+
+        # b) Copy into shared memory for b matrix
+        if j < b_shape[-1] and (m * BLOCK_DIM + pi) < b_shape[-2]:
+            b_pos = batch * b_batch_stride + (m * BLOCK_DIM + pi) * b_strides[-2] + j * b_strides[-1]
+            b_shared[pi, pj] = b_storage[b_pos]
+        else:
+            b_shared[pi, pj] = 0.0
+
+        cuda.syncthreads()
+        
+        # c) Compute the dot produce for position c[i, j]
+        c_value = 0.0
+        for k in range(BLOCK_DIM):
+            c_value += a_shared[pi, k] * b_shared[k, pj]
+
+        cuda.syncthreads()
+
+    # Write result to global memory
+    if i < out_shape[-2] and j < out_shape[-1]:
+        out_pos = batch * out_strides[0] + i * out_strides[-2] + j * out_strides[-1]
+        out[out_pos] = c_value
 
 
 tensor_matrix_multiply = jit(_tensor_matrix_multiply)
